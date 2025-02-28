@@ -162,10 +162,3 @@ function calculateAndShow() {
         }
     });
 }
-
-function showResult(poll, governingParties) {
-
-
-
-
-}
