@@ -1,5 +1,6 @@
-const saveBtn = document.querySelector('.submit-btn');
+const form = document.querySelector('.needs-validation');
 const fileInput = document.querySelector('.file-input');
+const saveBtn = document.querySelector('.submit-btn');
 const partiesWrapper = document.querySelector('.parties-wrapper');
 const partiesField = document.querySelector('.parties');
 const calculateBtn = document.querySelector('.calculate');
@@ -9,6 +10,13 @@ let polls = [];
 
 returnLocalStorage();
 
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    form.classList.add('was-validated');
+
+});
 saveBtn.addEventListener('click', readFile);
 fileInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -21,27 +29,29 @@ calculateBtn.addEventListener('click', calculateAndShow);
 function readFile() {
     polls = [];
     const file = fileInput.files[0];
+    if (file) {
 
-    const fileReader = new FileReader();
-    fileReader.readAsBinaryString(file);
-    fileReader.onload = async (e) => {
-        const fileData = e.target.result;
-        const workbook = XLSX.read(
-            fileData,
-            {type: "binary"},
-            {dateNF: "dd/mm/yyyy"}
-        );
+        const fileReader = new FileReader();
+        fileReader.readAsBinaryString(file);
+        fileReader.onload = async (e) => {
+            const fileData = e.target.result;
+            const workbook = XLSX.read(
+                fileData,
+                {type: "binary"},
+                {dateNF: "dd/mm/yyyy"}
+            );
 
-        for await  (const sheet of workbook.SheetNames) {
-            const pageData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {
-                raw: false,
-            });
-            const poll = new Poll(sheet);
-            polls.push(poll);
-            poll.createParties(pageData);
+            for await  (const sheet of workbook.SheetNames) {
+                const pageData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], {
+                    raw: false,
+                });
+                const poll = new Poll(sheet);
+                polls.push(poll);
+                poll.createParties(pageData);
+            }
+            showParties();
+            updateLocalStorage();
         }
-        showParties();
-        updateLocalStorage();
     }
 
 }

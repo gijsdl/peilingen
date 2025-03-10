@@ -1,17 +1,17 @@
-class Party{
+class Party {
     constructor(name, seats, enabled = true) {
         this.name = name;
         this.seats = seats;
         this.enabled = enabled;
     }
 
-    createCheckElement(){
+    createCheckElement() {
         const checkWrapper = document.createElement('div');
         checkWrapper.classList.add('form-check');
         const input = document.createElement('input');
         input.setAttribute('type', 'checkbox');
         input.classList.add('form-check-input', 'party');
-        input.setAttribute('id',this.name);
+        input.setAttribute('id', this.name);
         if (this.enabled) {
             input.setAttribute('checked', '');
         }
@@ -24,7 +24,7 @@ class Party{
         return checkWrapper;
     }
 
-    createResultHTML(){
+    createResultHTML() {
         const tr = document.createElement("tr");
         const th = document.createElement('th');
         th.setAttribute('scope', 'row');
