@@ -97,7 +97,7 @@ class Poll {
         const table = document.createElement('table');
         table.classList.add('table', 'table-striped');
         if (total >= 75) {
-            table.classList.add('table-primary');
+            table.classList.add('table-light');
         } else {
             table.classList.add('table-danger');
         }
